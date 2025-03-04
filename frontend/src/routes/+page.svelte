@@ -24,7 +24,7 @@
 			>
 				Start
 
-				<ArrowRight size="50" />
+				<ArrowRight size="55" />
 			</button>
 		</a>
 	</div>

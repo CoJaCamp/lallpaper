@@ -17,6 +17,7 @@
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@tailwindcss/vite": "^4.0.0",
 		"autoprefixer": "^10.4.20",
+		"lucide-svelte": "^0.477.0",
 		"postcss": "^8.5.3",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
@@ -30,8 +31,5 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
-	},
-	"dependencies": {
-		"lucide-svelte": "^0.477.0"
 	}
 }
