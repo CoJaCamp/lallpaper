@@ -1,23 +1,35 @@
-node_modules
+# Node modules
+*node_modules/
 
-# Output
-.output
-.vercel
-.netlify
-.wrangler
-/.svelte-kit
-/build
+# Build output
+build/
 
-# OS
+# Dependency directories
+.svelte-kit/
+.svelte/
+
+# Local environment settings
+.env
+.env.local
+
+# Logs
+*.log
+
+# Operating System files
 .DS_Store
 Thumbs.db
 
-# Env
-.env
-.env.*
-!.env.example
-!.env.test
+# IDE/Editor files
 
-# Vite
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+.idea/
+*.swp
+
+# SvelteKit adapter and static site output
+.svelte-kit/
+.svelte-kit/
+
+# Optional: if using test framework
+coverage/
+
+# npm debug file
+npm-debug.log*
