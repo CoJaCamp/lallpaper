@@ -1,0 +1,9 @@
+{
+  "name": "your-app",
+  "version": "1.0.0",
+  "scripts": {
+    "frontend": "cd frontend && bun run dev",
+    "backend": "cd backend && cargo run",
+    "dev": "bun x concurrently \"bun run frontend\" \"bun run backend\""
+  }
+}
