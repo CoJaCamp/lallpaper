@@ -1,7 +1,10 @@
 <script>
 	import '../app.css';
-	let { children } = $props();
 	import { page } from '$app/state';
+	import AccountComponent from './components/Account.svelte';
+	let { children } = $props();
+
+	let accountCompontentShow = $state(false);
 </script>
 
 <div class=" flex justify-center">
@@ -12,8 +15,25 @@
 			</a>
 			<div class="flex w-full justify-end">
 				<a href="/about"><button class="mx-3 text-3xl hover:text-[#c6b7be]">About</button></a>
+
+				<button
+					class="mx-3 mb-2 text-3xl hover:text-[#c6b7be]"
+					onclick={(e) => {
+						accountCompontentShow = true;
+					}}>Login/Register</button
+				>
 			</div>
 		</nav>
+	{/if}
+	{#if accountCompontentShow}
+		<button
+			class="fixed flex h-screen w-screen items-center justify-center bg-[#0f0f1b]/75 backdrop-blur-md"
+			onclick={() => {
+				accountCompontentShow = false;
+			}}
+		>
+			<AccountComponent />
+		</button>
 	{/if}
 	<div class="mt-18">
 		{@render children()}
