@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-const backendAddr = '127.0.0.1:8001';
+//Setting the backend address
+const backendAddr = 'http://127.0.0.1:8001';
 
-export async function lallpaperApi(path, data, crud) {
+export default async function lallpaperApi(path, data, crud) {
 	let fullPath = backendAddr + path;
 
 	const operations = {

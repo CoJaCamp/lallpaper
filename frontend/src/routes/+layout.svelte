@@ -5,6 +5,12 @@
 	let { children } = $props();
 
 	let accountCompontentShow = $state(false);
+
+	function handleBackdropClick(e) {
+		if (e.target === e.currentTarget) {
+			accountCompontentShow = false;
+		}
+	}
 </script>
 
 <div class=" flex justify-center">
@@ -18,8 +24,9 @@
 
 				<button
 					class="mx-3 mb-2 text-3xl hover:text-[#c6b7be]"
-					onclick={(e) => {
+					onclick={() => {
 						accountCompontentShow = true;
+						console.log('clicked');
 					}}>Login/Register</button
 				>
 			</div>
@@ -28,12 +35,11 @@
 	{#if accountCompontentShow}
 		<button
 			class="fixed flex h-screen w-screen items-center justify-center bg-[#0f0f1b]/75 backdrop-blur-md"
-			onclick={() => {
-				accountCompontentShow = false;
-			}}
-		>
-			<AccountComponent />
-		</button>
+			onclick={handleBackdropClick}
+			aria-label="Close login component backdrop"
+		></button>
+
+		<AccountComponent />
 	{/if}
 	<div class="mt-18">
 		{@render children()}
