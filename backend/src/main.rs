@@ -10,6 +10,8 @@ use sqlx::{PgPool, postgres::PgPoolOptions, query};
 use std::env;
 use tokio::net::TcpListener;
 use tower_http::cors::{Any, CorsLayer};
+mod auth;
+use auth::jwt;
 
 #[tokio::main]
 async fn main() {
