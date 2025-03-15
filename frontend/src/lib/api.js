@@ -16,8 +16,8 @@ export default async function lallpaperApi(path, data, crud) {
 		if (!operations[crud]) {
 			throw new Error(`Unsupported operation: ${crud}`);
 		}
-		return await operations[crud]().then((res) => res.response);
-	} catch (e) {
-		return e;
+		return await operations[crud]().then((res) => res.data);
+	} catch (error) {
+		return error;
 	}
 }

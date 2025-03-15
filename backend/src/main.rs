@@ -1,12 +1,14 @@
 use axum::{
     Extension, Router,
+    body::Body,
     extract::Json,
+    response::{self, IntoResponse, Response},
     routing::{get, post},
 };
 use bcrypt;
 use dotenv::dotenv;
 use serde::{Deserialize, Serialize};
-use sqlx::{PgPool, postgres::PgPoolOptions, query};
+use sqlx::{PgPool, Row, postgres::PgPoolOptions, query};
 use std::env;
 use tokio::net::TcpListener;
 use tower_http::cors::{Any, CorsLayer};
@@ -47,8 +49,9 @@ async fn main() {
 }
 
 #[derive(Serialize)]
-struct Output {
+struct Message<T> {
     message: String,
+    data: Option<T>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -66,9 +69,10 @@ struct LoginData {
 async fn register_users(
     Extension(pool): Extension<PgPool>,
     Json(payload): Json<RegisterData>,
-) -> Json<Output> {
-    let mut response = Output {
+) -> Response<Body> {
+    let mut body: Message<String> = Message {
         message: String::new(),
+        data: None,
     };
 
     let username_check = query("SELECT username FROM users WHERE username = $1")
@@ -78,12 +82,12 @@ async fn register_users(
 
     match username_check {
         Ok(Some(row)) => {
-            response.message = String::from("That username already exists!");
+            body.message = String::from("That username already exists!");
             println!("Test Failed");
         }
         Ok(None) => {
             println!("Next step: HASH");
-            //change hash cost to 12-14 for production
+            //Change hash cost to 12-14 for production
             let hashed_password = match bcrypt::hash(payload.password, 8) {
                 Ok(hash) => hash,
                 Err(e) => {
@@ -100,8 +104,9 @@ async fn register_users(
                     .await;
 
             match new_user {
-                Ok(id) => {
-                    println!("id is here")
+                Ok(row) => {
+                    let jwt = jwt::create_jwt(row.get("id"));
+                    body.data = Some(jwt.unwrap());
                 }
                 Err(e) => {
                     eprintln!("Database Error: {}", e);
@@ -112,15 +117,13 @@ async fn register_users(
         Err(e) => {}
     }
 
-    Json(response)
+    let response = Json(body).into_response();
+
+    response
 }
 
-async fn login_users(Json(payload): Json<LoginData>) -> Json<Output> {
+async fn login_users(Json(payload): Json<LoginData>) -> Json<String> {
     println!("{:?}", payload);
 
-    let response = Output {
-        message: String::from("Test1"),
-    };
-
-    Json(response)
+    Json("String".to_string())
 }

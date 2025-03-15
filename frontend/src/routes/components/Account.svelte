@@ -22,8 +22,9 @@
 		lallpaperApi('/users/login', loginData, 'post');
 	}
 
-	function handleRegister() {
-		lallpaperApi('/users/register', registerData, 'post');
+	async function handleRegister() {
+		let response = await lallpaperApi('/users/register', registerData, 'post');
+		console.log(response); // This will log the response after it's resolved
 	}
 </script>
 
