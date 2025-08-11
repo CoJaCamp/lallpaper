@@ -45,6 +45,10 @@ pub fn encode_access_token(user_id: i32, username: String, user_roles: Vec<Strin
     Ok((new_token, expiration))
 }
 
-pub fn validate_jwt(token: &str) -> Result<TokenData<Claims>, jsonwebtoken::errors::Error> {
+pub fn decode_access_token(token: &str) -> Result<TokenData<AccessClaims>, jsonwebtoken::errors::Error> {
     let secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env");
+
+    let token_data:TokenData<AccessClaims> = decode(&token, &DecodingKey::from_secret(&secret.as_bytes()), &Validation::default())?;
+
+    Ok(token_data)
 }
