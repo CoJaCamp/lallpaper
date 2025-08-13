@@ -52,3 +52,27 @@ pub fn decode_access_token(token: &str) -> Result<TokenData<AccessClaims>, jsonw
 
     Ok(token_data)
 }
+
+pub fn encode_refresh_token(user_id: i32) -> Result<(String, u64), jsonwebtoken::errors::Error> {
+    let secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env");
+
+    let expiration = Utc::now().checked_add_signed(Duration::days(21)).expect("valid timestamp").timestamp() as u64;
+
+    let refresh_claim = RefreshClaims{
+        user_id,
+        exp: expiration,
+        token_type: TokenType::Refresh,
+    };
+
+    let new_token = encode(&Header::default(), &refresh_claim, &EncodingKey::from_secret(&secret.as_bytes()))?;
+
+    Ok((new_token, expiration))
+}
+
+pub fn decode_refresh_token(token: &str) -> Result<TokenData<RefreshClaims>, jsonwebtoken::errors::Error> {
+    let secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env");
+
+    let token_data:TokenData<RefreshClaims> = decode(&token, &DecodingKey::from_secret(&secret.as_bytes()), &Validation::default())?;
+
+    Ok(token_data)
+}
